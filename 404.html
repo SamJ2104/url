@@ -39,6 +39,11 @@
         xhr.onload = function () {
           try {
             var payload = JSON.parse(xhr.response);
+
+            if (!payload.record) {
+              throw new Error("Invalid JSON response");
+            }
+
             var record = payload.record;
             var destinationUrl = record[slug];
 
