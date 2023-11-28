@@ -7,9 +7,9 @@
       /**
        * Configuration goes here
        */
-      // Format: https://api.github.com/repos/{owner}/{repo}/issues/
-      var GITHUB_ISSUES_LINK =
-        "https://api.github.com/repos/SamJ2104/url/issues/";
+      // Replace 'your_bin_id' with your actual JSON Bin ID
+      var JSON_BIN_ID = "your_bin_id";
+      var JSON_BIN_LINK = "https://api.jsonbin.io/b/" + JSON_BIN_ID;
       var PATH_SEGMENTS_TO_SKIP = 0;
 
       /**
@@ -40,8 +40,9 @@
         xhr.onload = function () {
           try {
             var payload = JSON.parse(xhr.response);
-            var message = payload.message;
-            var title = payload.title;
+
+            // Assuming the redirect URL is stored in the 'redirect_url' field
+            var title = payload.redirect_url;
 
             // Workaround IE 11 lack of support for new URL()
             var url = document.createElement("a");
@@ -49,7 +50,6 @@
 
             // Invalid URLs includes invalid issue numbers, issue titles that are not URLs, and recursive destination URLs
             var isInvalidUrl =
-              message === "Not Found" ||
               !title ||
               !isUrl(title) ||
               url.hostname === location.hostname;
@@ -67,7 +67,8 @@
         xhr.onerror = function () {
           location.replace(homepage);
         };
-        xhr.open("GET", GITHUB_ISSUES_LINK + issueNumber);
+
+        xhr.open("GET", JSON_BIN_LINK);
         xhr.send();
       }
 
