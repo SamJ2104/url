@@ -7,9 +7,8 @@
       /**
        * Configuration goes here
        */
-      // Format: https://api.github.com/repos/{owner}/{repo}/issues/
-      var GITHUB_ISSUES_LINK =
-        "https://api.github.com/repos/SamJ2104/url/issues/";
+      var JSONBIN_URL =
+        "https://api.jsonbin.io/v3/b/656621ad0574da7622cd6467/latest";
       var PATH_SEGMENTS_TO_SKIP = 0;
 
       /**
@@ -24,7 +23,7 @@
 
       function redirect() {
         var location = window.location;
-        var issueNumber = location.pathname.split("/")[
+        var slug = location.pathname.split("/")[
           PATH_SEGMENTS_TO_SKIP + 1
         ];
         var homepage =
@@ -40,24 +39,16 @@
         xhr.onload = function () {
           try {
             var payload = JSON.parse(xhr.response);
-            var message = payload.message;
-            var title = payload.title;
+            var record = payload.record;
+            var destinationUrl = record[slug];
 
-            // Workaround IE 11 lack of support for new URL()
-            var url = document.createElement("a");
-            url.setAttribute("href", title);
-
-            // Invalid URLs includes invalid issue numbers, issue titles that are not URLs, and recursive destination URLs
-            var isInvalidUrl =
-              message === "Not Found" ||
-              !title ||
-              !isUrl(title) ||
-              url.hostname === location.hostname;
+            // Check if the destination URL is valid
+            var isInvalidUrl = !destinationUrl || !isUrl(destinationUrl);
 
             if (isInvalidUrl) {
               location.replace(homepage);
             } else {
-              location.replace(title);
+              location.replace(destinationUrl);
             }
           } catch (e) {
             location.replace(homepage);
@@ -67,7 +58,7 @@
         xhr.onerror = function () {
           location.replace(homepage);
         };
-        xhr.open("GET", GITHUB_ISSUES_LINK + issueNumber);
+        xhr.open("GET", JSONBIN_URL);
         xhr.send();
       }
 
