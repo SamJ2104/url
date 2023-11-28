@@ -1,5 +1,7 @@
-1. To add a new short link, add an issue with the title being the link you want
-   to shorten (including the `http(s)://`) to
-   [this repo's issue tab](https://github.com/SamJ2104/url/issues).
+This is a Url Shortener Build Using Github Pages and jsonbin.io.
 
-1. The newly created short url can be accessed via `url.samj.app/{issue_number}`
+To Make a New Shortlink:
+   1. Go to [https://url.samj.app](https://url.samj.app)
+   2. Type in the Url and Slug and Click Shorten
+   3. Profit??
+      
